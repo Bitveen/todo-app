@@ -1,10 +1,12 @@
 import React from "react";
 import TodoList from "TodoList";
-
+import AddTodo from "AddTodo";
 
 export default class TodoApp extends React.Component {
     constructor(props) {
         super(props);
+
+        this.addTodo = this.addTodo.bind(this);
 
         this.state = {
             todos: [
@@ -21,6 +23,17 @@ export default class TodoApp extends React.Component {
 
     }
 
+    addTodo(todoText) {
+        let {todos} = this.state;
+        let newTodo = {
+            id: todos.length + 1,
+            text: todoText
+        };
+
+        this.setState({
+            todos: todos.concat([newTodo])
+        });
+    }
 
     render() {
         let {todos} = this.state;
@@ -28,6 +41,7 @@ export default class TodoApp extends React.Component {
             <div>
                 <h3>Hello react!</h3>
                 <TodoList todos={todos} />
+                <AddTodo onTodoAdd={this.addTodo} />
             </div>
         );
     }

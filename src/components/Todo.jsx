@@ -10,8 +10,8 @@ export default class Todo extends React.Component {
         let {text, id} = this.props;
 
         return (
-            <div>
-                {text}
+            <div className="todo">
+                {id}. {text}
             </div>
         );
     }
