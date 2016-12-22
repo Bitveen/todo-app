@@ -3,7 +3,8 @@ import TodoList from "TodoList";
 import AddTodo from "AddTodo";
 import TodoSearch from "TodoSearch";
 import uuid from "node-uuid";
-
+import TodoAPI from "../api/TodoAPI.jsx";
+import moment from "moment";
 
 export default class TodoApp extends React.Component {
     constructor(props) {
@@ -16,26 +17,13 @@ export default class TodoApp extends React.Component {
         this.state = {
             showCompleted: false,
             searchText: "",
-            todos: [
-                {
-                    id: uuid(),
-                    text: 'Walk the dog',
-                    completed: false
-                },
-                {
-                    id: uuid(),
-                    text: 'Clean the yard',
-                    completed: false
-                },
-                {
-                    id: uuid(),
-                    text: 'Play video games',
-                    completed: true
-                }
-            ]
-
+            todos: TodoAPI.getTodos()
         };
 
+    }
+
+    componentDidUpdate() {
+        TodoAPI.setTodos(this.state.todos);
     }
 
     addTodo(todoText) {
@@ -43,7 +31,8 @@ export default class TodoApp extends React.Component {
         let newTodo = {
             id: uuid(),
             text: todoText,
-            completed: false
+            completed: false,
+            createdAt: moment().unix()
         };
 
         this.setState({
@@ -75,11 +64,12 @@ export default class TodoApp extends React.Component {
     }
 
     render() {
-        let {todos} = this.state;
+        let {todos, showCompleted, searchText} = this.state;
+        let filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
         return (
             <div>
                 <TodoSearch onSearch={this.handleSearch}/>
-                <TodoList todos={todos} onToggle={this.handleToggle}/>
+                <TodoList todos={filteredTodos} onToggle={this.handleToggle}/>
                 <AddTodo onTodoAdd={this.addTodo} />
             </div>
         );
