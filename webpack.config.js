@@ -6,7 +6,11 @@ module.exports = {
     },
     resolve: {
         root: __dirname + "/src",
-        alias: {},
+        alias: {
+            TodoApp: "components/TodoApp.jsx",
+            TodoList: "components/TodoList.jsx",
+            Todo: "components/Todo.jsx"
+        },
         extensions: ["", ".js", ".jsx"]
     },
     module: {
